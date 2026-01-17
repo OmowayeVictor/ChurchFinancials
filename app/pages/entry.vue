@@ -4,10 +4,7 @@
       <!-- Header with button -->
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold">Entries</h2>
-        <button
-          @click="goToIncome()"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
+        <button @click="goToIncome()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           + Create Income
         </button>
       </div>
@@ -18,43 +15,40 @@
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Entry ID</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Income Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expenses Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Income Status
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expenses Status
+              </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr
-              v-for="(entry, index) in entries"
-              :key="entry.id"
-              class="hover:bg-gray-50 transition"
-            >
+            <tr v-for="(entry, index) in entries" :key="entry.id" class="hover:bg-gray-50 transition"
+              @click="navigateEntry(entry)">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ entry.id }}</td>
 
               <!-- Income Status -->
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap" ">
                 <span
                   :class="entry.income_status === 'success'
-                    ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800'
-                    : entry.income_status === null
-                    ? 'px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800'
-                    : 'px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-500'"
+                    ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800' :
+                    entry.income_status === null
+                      ? 'px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800'
+                      : 'px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-500'"
                 >
                   {{ entry.income_status === 'success' ? 'Closed' : entry.income_status === null ? 'Open' : 'N/A' }}
                 </span>
               </td>
 
               <!-- Expenses Status -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  :class="entry.expenses_status === 'success'
-                    ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800'
-                    : entry.expenses_status === null
+              <td class=" px-6 py-4 whitespace-nowrap">
+                <span :class="entry.expenses_status === 'success'
+                  ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800'
+                  : entry.expenses_status === null
                     ? 'px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800'
-                    : 'px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-500'"
-                >
+                    : 'px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-500'">
                   {{ entry.expenses_status === 'success' ? 'Closed' : entry.expenses_status === null ? 'Open' : 'N/A' }}
                 </span>
               </td>
@@ -64,10 +58,8 @@
               </td>
 
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                <button
-                  @click.stop="confirmDelete(entry.id)"
-                  class="px-3 py-1 bg-red-100 text-red-800 rounded hover:bg-red-200"
-                >
+                <button @click.stop="confirmDelete(entry.id)"
+                  class="px-3 py-1 bg-red-100 text-red-800 rounded hover:bg-red-200">
                   Delete
                 </button>
               </td>
@@ -123,16 +115,16 @@ const formatDate = (dateStr) => {
 }
 
 const goToIncome = (entryId = null) => {
-  router.push({ path: '/income', query: { entry: entryId } })
+  router.push({ path: '/create_entry', query: { entry: entryId } })
 }
 
 const navigateEntry = (entry) => {
   if (entry.income_status === null && entry.expenses_status === null) {
-    router.push({ path: '/income', query: { entry: entry.id } })
+    router.push({ path: '/create_entry', query: { entry: entry.id } })
   } else if (entry.income_status !== 'success' || entry.expenses_status !== 'success') {
     router.push({ path: '/edit_entry', query: { entry: entry.id } })
   } else {
-    router.push({ path: '/income_dashboard', query: { entry: entry.id } })
+    router.push({ path: '/dashboard', query: { entry: entry.id } })
   }
 }
 

@@ -4,10 +4,7 @@
 
       <!-- Back button + Dashboard title -->
       <div class="flex justify-between items-center mb-6">
-        <button
-          @click="goBack"
-          class="px-4 py-2 rounded bg-gray-200 text-gray-800 hover:bg-gray-300"
-        >
+        <button @click="goBack" class="px-4 py-2 rounded bg-gray-200 text-gray-800 hover:bg-gray-300">
           ← Back
         </button>
         <h2 class="text-2xl font-semibold">Entry Dashboard</h2>
@@ -31,7 +28,8 @@
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Income</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Income
+                </th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -42,7 +40,8 @@
               </tr>
             </tbody>
           </table>
-          <div v-if="!loading && !incomeSummary.length" class="mt-2 text-gray-500 text-sm">No income recorded for this entry.</div>
+          <div v-if="!loading && !incomeSummary.length" class="mt-2 text-gray-500 text-sm">No income recorded for this
+            entry.</div>
         </div>
         <p class="font-semibold text-lg text-right mt-2">Total Income: {{ formatAmount(totalIncome) }}</p>
       </div>
@@ -56,7 +55,8 @@
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Expenses</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total
+                  Expenses</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -67,7 +67,8 @@
               </tr>
             </tbody>
           </table>
-          <div v-if="!loading && !expensesSummary.length" class="mt-2 text-gray-500 text-sm">No expenses recorded for this entry.</div>
+          <div v-if="!loading && !expensesSummary.length" class="mt-2 text-gray-500 text-sm">No expenses recorded for
+            this entry.</div>
         </div>
         <p class="font-semibold text-lg text-right mt-2">Total Expenses: {{ formatAmount(totalExpenses) }}</p>
       </div>
@@ -86,7 +87,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 
 definePageMeta({ layout: 'app' })
-
+  & supabase & supabase
 const { $supabase } = useNuxtApp()
 const toast = useToast()
 const router = useRouter()
@@ -112,7 +113,7 @@ if (!entryId) {
 const fetchSummary = async () => {
   loading.value = true
   try {
-    // Income
+    // Income$supabase$supabase
     const { data: incomeData, error: incomeError } = await $supabase
       .from('incomes')
       .select('category_id, amount, categories(category_name)')
@@ -163,6 +164,6 @@ const formatAmount = (amt) => {
 }
 
 const goBack = () => {
-  router.push('/income_entry')
+  router.push('/entry')
 }
 </script>

@@ -4,10 +4,8 @@
       <!-- Header with Button -->
       <div class="px-6 py-4 border-b flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-800">Categories</h2>
-        <button
-          @click="openCreateModal()"
-          class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-        >
+        <button @click="openCreateModal()"
+          class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700">
           + New Category
         </button>
       </div>
@@ -23,62 +21,50 @@
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category Name
+              </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(category, index) in categories" :key="index" class="hover:bg-gray-50 transition">
+            <tr v-for="(category, index) in categories" :key="category.id">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ category.category_name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ category.category_name }}
+              </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
-                  :class="category.category_status === 'active' ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800' : 'px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800'"
-                >
+                  :class="category.category_status === 'active' ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800' : 'px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800'">
                   {{ category.category_status }}
                 </span>
               </td>
-             <td class="px-6 py-4 whitespace-nowrap">
-  <template v-if="category.category_status === 'active'">
-    <button @click="openEditModal(category)" class="text-blue-600 hover:text-blue-800" title="Edit category">
-      <i class="pi pi-pencil text-lg"></i>
-    </button>
-  </template>
-  <template v-else>
-    <button @click="openDeleteModal(category)" class="text-red-600 hover:text-red-800" title="Delete category">
-      <i class="pi pi-trash text-lg"></i>
-    </button>
-  </template>
-</td>
+              <td class="px-6 py-4 whitespace-nowrap flex gap-3">
+                <!-- Edit (always available) -->
+                <button @click="openEditModal(category)" class="text-blue-600 hover:text-blue-800"
+                  title="Edit category">
+                  <i class="pi pi-pencil text-lg"></i>
+                </button>
+
+                <!-- Delete (inactive only) -->
+                <button v-if="category.category_status === 'inactive'" @click="openDeleteModal(category)"
+                  class="text-red-600 hover:text-red-800" title="Delete category">
+                  <i class="pi pi-trash text-lg"></i>
+                </button>
+              </td>
             </tr>
-            
+
           </tbody>
         </table>
       </div>
     </div>
 
     <!-- Modal Component -->
-    <CreateModal
-    v-if="modalType === 'create'"
-      :show="showModal"
-      @close="showModal = false"
-      @submit="handleNewCategory"
-    />
-    <DeleteModal
-    v-if="modalType === 'delete'"
-  :show="showModal"
-  :category="categoryToDelete"
-  @close="showModal = false"
-  @confirm="handleDeleteCategory"
-/>
-<EditModal
-  v-if="modalType === 'edit'"
-  :show="showModal"
-  :category="categoryToEdit"
-  @close="closeModal"
-  @submit="handleEditCategory"
-/>
+    <CreateModal v-if="modalType === 'create'" :show="showModal" @close="showModal = false"
+      @submit="handleNewCategory" />
+    <DeleteModal v-if="modalType === 'delete'" :show="showModal" :category="categoryToDelete" @close="showModal = false"
+      @confirm="handleDeleteCategory" />
+    <EditModal v-if="modalType === 'edit'" :show="showModal" :category="categoryToEdit" @close="closeModal"
+      @submit="handleEditCategory" />
   </div>
 </template>
 
@@ -113,7 +99,7 @@ const openCreateModal = () => {
   showModal.value = true
 }
 const openEditModal = (category) => {
-  categoryToEdit.value = { ...category } 
+  categoryToEdit.value = { ...category }
   modalType.value = 'edit'
   showModal.value = true
 }
@@ -128,6 +114,7 @@ const closeModal = () => {
   showModal.value = false
   modalType.value = null
   categoryToDelete.value = null
+  categoryToEdit.value = null
 }
 
 const handleDeleteCategory = async () => {
@@ -135,12 +122,12 @@ const handleDeleteCategory = async () => {
 
   try {
      const { error } = await $supabase
-    .from('categories')
-    .delete()
-    .eq('id', categoryToDelete.value.id)
+      .from('categories')
+      .delete()
+      .eq('id', categoryToDelete.value.id)
 
-  if (error)  throw error;
-   
+    if (error) throw error;
+
 
     categories.value = categories.value.filter(
       c => c.id !== categoryToDelete.value.id
@@ -151,21 +138,21 @@ const handleDeleteCategory = async () => {
       detail: 'Category deleted successfully',
       life: 3000
     })
-  
 
-  showModal.value = false
-  categoryToDelete.value = null
-  loading.value = false
+
+    showModal.value = false
+    categoryToDelete.value = null
+    loading.value = false
 
   } catch (err) {
-     toast.add({
+    toast.add({
       severity: 'error',
       summary: 'Error',
       detail: 'Failed to delete category',
       life: 3000
     })
   }
- 
+
 }
 
 const fetchCategories = async () => {
@@ -174,7 +161,7 @@ const fetchCategories = async () => {
     .from("categories")
     .select('*')
     .order('created_at', { ascending: true })
-  
+
   if (error) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Could not fetch categories', life: 3000 })
   } else {
@@ -196,6 +183,7 @@ const handleEditCategory = async (updatedCategory) => {
       .eq('id', updatedCategory.id)
       .select()
       .single()
+      .order('id', { ascending: false })
 
     if (error) throw error
 

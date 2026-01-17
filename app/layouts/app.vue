@@ -20,7 +20,7 @@
           <NuxtLink to="/categories" class="block p-2 rounded hover:bg-gray-100">Categories</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/income_entry" class="block p-2 rounded hover:bg-gray-100">Income Entry</NuxtLink>
+          <NuxtLink to="/entry" class="block p-2 rounded hover:bg-gray-100">Income Entry</NuxtLink>
         </li>
       </ul>
     </aside>

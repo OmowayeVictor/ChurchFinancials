@@ -27,7 +27,6 @@
               v-model="localCategory.status"
               class="w-full border rounded p-2 bg-white text-gray-800
                      focus:ring-2 focus:ring-blue-500"
-              :disabled="isActive"
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -43,7 +42,7 @@
                      focus:ring-2 focus:ring-blue-500"
             >
               <option value="income">Income</option>
-              <option value="expense">Expense</option>
+              <option value="expenses">Expense</option>
             </select>
           </div>
 
@@ -70,37 +69,53 @@
 </template>
 
 <script setup>
-import { ref, watch, toRefs } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useToast } from 'primevue/usetoast'
 
-defineProps({
+const props = defineProps({
   show: Boolean,
   category: Object
 })
 
-defineEmits(['close', 'submit'])
-
+const emit = defineEmits(['close', 'submit'])
 const toast = useToast()
-const localCategory = ref({ name: '', status: '', type: '' })
 
-// If category prop changes, update local form values
+const localCategory = ref({
+  id: null,
+  name: '',
+  status: '',
+  type: ''
+})
+
+/* Populate form with existing values */
 watch(
-  () => category,
+  () => props.category,
   (val) => {
-    if (val) localCategory.value = { ...val }
+    if (!val) return
+    localCategory.value = {
+      id: val.id,
+      name: val.category_name,
+      status: val.category_status,
+      type: val.type
+    }
   },
   { immediate: true }
 )
 
-// Disable status select if category is active
 const isActive = computed(() => localCategory.value.status === 'active')
 
 const submitForm = () => {
   if (!localCategory.value.name) {
-    toast.add({ severity: 'warn', summary: 'Validation', detail: 'Name is required', life: 3000 })
+    toast.add({
+      severity: 'warn',
+      summary: 'Validation',
+      detail: 'Name is required',
+      life: 3000
+    })
     return
   }
-  // emit updated category to parent
-  $emit('submit', { ...localCategory.value })
+
+  emit('submit', { ...localCategory.value })
 }
 </script>
+

@@ -22,4 +22,15 @@ primevue: {
     css: [
     'primeicons/primeicons.css'
   ],
+   runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.Supabase_URL,
+      supabaseApi: process.env.supabase_API
+    }
+  },
+  supabase: {
+    url: process.env.supabase_URL,
+    key: process.env.supabase_API,
+    redirect: true
+  }
 });
