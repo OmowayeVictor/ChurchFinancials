@@ -85,7 +85,7 @@ import { useRouter } from 'vue-router'
 
 definePageMeta({ layout: 'app' })
 
-const { $supabase } = useNuxtApp()
+const supabase = useSupabaseClient()
 const toast = useToast()
 const router = useRouter()
 const loading = ref(true)
@@ -93,7 +93,7 @@ const entries = ref([])
 
 const fetchEntries = async () => {
   loading.value = true
-  const { data, error } = await $supabase
+  const { data, error } = await supabase
     .from('entries')
     .select('*')
     .order('created_at', { ascending: false })
@@ -135,15 +135,15 @@ const confirmDelete = async (entryId) => {
   loading.value = true
   try {
     // Delete related incomes
-    const { error: incomeError } = await $supabase.from('incomes').delete().eq('entry_id', entryId)
+    const { error: incomeError } = await supabase.from('incomes').delete().eq('entry_id', entryId)
     if (incomeError) throw incomeError
 
     // Delete related expenses
-    const { error: expenseError } = await $supabase.from('expenses').delete().eq('entry_id', entryId)
+    const { error: expenseError } = await supabase.from('expenses').delete().eq('entry_id', entryId)
     if (expenseError) throw expenseError
 
     // Delete entry
-    const { error: entryError } = await $supabase.from('entries').delete().eq('id', entryId)
+    const { error: entryError } = await supabase.from('entries').delete().eq('id', entryId)
     if (entryError) throw entryError
 
     toast.add({ severity: 'success', summary: 'Deleted', detail: `Entry #${entryId} deleted`, life: 3000 })

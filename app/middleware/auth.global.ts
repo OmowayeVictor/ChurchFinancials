@@ -4,9 +4,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const publicPages = ['/login', '/signup', '/reset']
 
-  if (!data?.user && !publicPages.includes(to.path)) {
-    return navigateTo('/login')
-  }
+//   if (!data?.user && !publicPages.includes(to.path)) {
+//     return navigateTo('/login')
+//   }
 
   if (data?.user && publicPages.includes(to.path)) {
     return navigateTo('/')

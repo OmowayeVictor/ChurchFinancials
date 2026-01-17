@@ -86,8 +86,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 
-definePageMeta({ layout: 'app' })
-  & supabase & supabase
+
 const { $supabase } = useNuxtApp()
 const toast = useToast()
 const router = useRouter()

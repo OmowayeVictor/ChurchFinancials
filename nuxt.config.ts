@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@primevue/nuxt-module', '@nuxtjs/supabase'],
-  plugins: ['~/plugins/supabase.client.ts'],
+  // plugins: ['~/plugins/supabase.client.ts'],
 primevue: {
         options: {
             ripple: true,
@@ -24,13 +24,20 @@ primevue: {
   ],
    runtimeConfig: {
     public: {
-      supabaseUrl: process.env.Supabase_URL,
+      supabaseUrl: process.env.supabase_URL,
       supabaseApi: process.env.supabase_API
     }
   },
   supabase: {
     url: process.env.supabase_URL,
     key: process.env.supabase_API,
-    redirect: true
+    redirect: true,
+      redirectOptions: {
+    login: '/auth/login',
+    callback: '/entry',
+    include: undefined,
+    exclude: ['/auth/**'], 
+    saveRedirectToCookie: false,
+  }
   }
 });

@@ -81,7 +81,7 @@ import { useToast } from 'primevue/usetoast'
 
 definePageMeta({ layout: 'app' })
 
-const { $supabase } = useNuxtApp()
+const supabase = useSupabaseClient()
 const toast = useToast()
 
 const loading = ref(false)
@@ -102,7 +102,7 @@ watch(type, fetchCategories)
 async function fetchCategories() {
   if (!activeEntryId.value) return
 
-  const { data, error } = await $supabase
+  const { data, error } = await supabase
     .from('categories')
     .select('id, category_name')
     .eq('type', type.value)
@@ -116,7 +116,7 @@ async function fetchCategories() {
 }
 
 async function getOrCreateEntry() {
-  const { data: entry, error } = await $supabase
+  const { data: entry, error } = await supabase
     .from('entries')
     .select('*')
     .or('income_status.is.null,expenses_status.is.null')
@@ -135,7 +135,7 @@ async function getOrCreateEntry() {
     if (entry.income_status === null) type.value = 'income'
     else if (entry.expenses_status === null) type.value = 'expenses'
   } else {
-    const { data: newEntry, error: createError } = await $supabase
+    const { data: newEntry, error: createError } = await supabase
       .from('entries')
       .insert({ income_status: null, expenses_status: null })
       .select()
@@ -180,7 +180,7 @@ async function submitEntry() {
   try {
     const tableName = type.value === 'income' ? 'incomes' : 'expenses'
 
-    const { error: insertError } = await $supabasefrom(tableName).insert(rows)
+    const { error: insertError } = await supabasefrom(tableName).insert(rows)
     if (insertError) throw insertError
 
     toast.add({ severity: 'success', summary: 'Success', detail: `${type.value} saved successfully`, life: 3000 })
@@ -213,7 +213,7 @@ async function closeSession() {
       return
     }
 
-    const { error } = await $supabase
+    const { error } = await supabase
       .from('entries')
       .update(update)
       .eq('id', activeEntryId.value)
@@ -223,7 +223,7 @@ async function closeSession() {
     toast.add({ severity: 'success', summary: 'Success', detail: `${type.value} session closed`, life: 3000 })
 
     // Refresh entry
-    const { data: updatedEntry } = await $supabase.from('entries').select('*').eq('id', activeEntryId.value).single()
+    const { data: updatedEntry } = await supabase.from('entries').select('*').eq('id', activeEntryId.value).single()
     activeEntry.value = updatedEntry
 
     // If both types closed, hide form

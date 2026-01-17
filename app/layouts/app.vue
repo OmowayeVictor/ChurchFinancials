@@ -14,9 +14,6 @@
 
       <ul class="space-y-2">
         <li>
-          <NuxtLink to="/" class="block p-2 rounded hover:bg-gray-100">Dashboard</NuxtLink>
-        </li>
-        <li>
           <NuxtLink to="/categories" class="block p-2 rounded hover:bg-gray-100">Categories</NuxtLink>
         </li>
         <li>
@@ -45,16 +42,18 @@
       </div>
 
       <!-- Header -->
-      <header class="bg-white shadow-sm p-1 flex justify-center">
-        <div class="flex items-center gap-5 text-center md:text-left flex-wrap md:flex-nowrap">
-          <img src="/images/cac_logo.png" alt="Church Logo" class="h-24 w-24 object-contain mx-auto md:mx-0" />
-          <div class="leading-snug">
-            <h1 class="text-2xl font-extrabold tracking-wide">Christ Apostolic Church</h1>
-            <p class="text-base font-semibold text-gray-700">Ephphatha District HeadQuaters</p>
-            <p class="text-base font-semibold text-gray-700">Fountain Of Life Assembly</p>
-          </div>
-        </div>
-      </header>
+   <header class="bg-white shadow-sm p-1 flex justify-center">
+  <div class="flex items-center gap-5 text-center md:text-left flex-wrap md:flex-nowrap">
+    <NuxtLink to="/">
+      <img src="/images/cac_logo.png" alt="Church Logo" class="h-24 w-24 object-contain mx-auto md:mx-0 cursor-pointer" />
+    </NuxtLink>
+    <div class="leading-snug">
+      <h1 class="text-2xl font-extrabold tracking-wide">Christ Apostolic Church</h1>
+      <p class="text-base font-semibold text-gray-700">Ephphatha District HeadQuaters</p>
+      <p class="text-base font-semibold text-gray-700">Fountain Of Life Assembly</p>
+    </div>
+  </div>
+</header>
 
       <!-- Page content -->
       <main class="flex-1 p-6 overflow-auto">

@@ -67,7 +67,7 @@ import { useToast } from 'primevue/usetoast'
 
 definePageMeta({ layout: 'app' })
 
-const { $supabase } = useNuxtApp()
+const supabase = useSupabaseClient()
 const toast = useToast()
 const route = useRoute()
 const router = useRouter()
@@ -87,7 +87,7 @@ onMounted(async () => {
     activeEntryId.value = route.query.entry
     if (!activeEntryId.value) return
 
-    const { data: entry, error } = await $supabaserom('entries').select('*').eq('id', activeEntryId.value).single()
+    const { data: entry, error } = await supabase.from('entries').select('*').eq('id', activeEntryId.value).single()
     if (error || !entry) {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Entry not found', life: 3000 })
         return
@@ -109,7 +109,7 @@ onMounted(async () => {
 })
 
 async function fetchCategories() {
-    const { data, error } = await $supabase
+    const { data, error } = await supabase
         .from('categories')
         .select('id, category_name')
         .eq('type', type.value)
@@ -120,7 +120,7 @@ async function fetchCategories() {
         categories.value = data
         // fetch existing amounts for this entry
         const table = type.value === 'income' ? 'incomes' : 'expenses'
-        const { data: rows } = await $supabase
+        const { data: rows } = await supabase
             .from(table)
             .select('category_id, amount, inputed_by')
             .eq('entry_id', activeEntryId.value)
@@ -154,7 +154,7 @@ async function submitEdit() {
         const table = type.value === 'income' ? 'incomes' : 'expenses'
 
         // Upsert: update if exists, insert if not
-        const { error } = await $supabase.from(table).insert(rows)
+        const { error } = await supabase.from(table).insert(rows)
         if (error) throw error
 
         toast.add({ severity: 'success', summary: 'Saved', detail: `${type.value} updated`, life: 3000 })
@@ -171,7 +171,7 @@ async function closeSession() {
     loading.value = true
     try {
         const column = openType.value === 'income' ? 'income_status' : 'expenses_status'
-        const { error } = await $supabase.from('entries').update({ [column]: 'success' }).eq('id', activeEntryId.value)
+        const { error } = await supabase.from('entries').update({ [column]: 'success' }).eq('id', activeEntryId.value)
         if (error) throw error
         toast.add({ severity: 'success', summary: 'Closed', detail: `${openType.value} session closed`, life: 3000 })
         router.push('/entry')

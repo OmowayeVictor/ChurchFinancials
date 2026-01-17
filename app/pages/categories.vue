@@ -79,7 +79,7 @@ definePageMeta({
   layout: 'app'
 })
 
-const { $supabase } = useNuxtApp()
+const supabase = useSupabaseClient()
 
 const toast = useToast()
 //Data
@@ -121,7 +121,7 @@ const handleDeleteCategory = async () => {
   loading.value = true
 
   try {
-     const { error } = await $supabase
+     const { error } = await supabase
       .from('categories')
       .delete()
       .eq('id', categoryToDelete.value.id)
@@ -157,7 +157,7 @@ const handleDeleteCategory = async () => {
 
 const fetchCategories = async () => {
   loading.value = true
-  const { data, error } = await $supabase
+  const { data, error } = await supabase
     .from("categories")
     .select('*')
     .order('created_at', { ascending: true })
@@ -173,7 +173,7 @@ const fetchCategories = async () => {
 const handleEditCategory = async (updatedCategory) => {
   loading.value = true
   try {
-    const { data, error } = await $supabase
+    const { data, error } = await supabase
       .from('categories')
       .update({
         category_name: updatedCategory.name,
@@ -213,7 +213,7 @@ const handleNewCategory = async (category) => {
   loading.value = true
 
   try {
-    const { data, error } = await $supabase
+    const { data, error } = await supabase
       .from('categories')
       .insert({
         category_name: category.name,
