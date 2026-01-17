@@ -171,7 +171,7 @@ async function closeSession() {
     loading.value = true
     try {
         const column = openType.value === 'income' ? 'income_status' : 'expenses_status'
-        const { error } = await & supabase.from('entries').update({ [column]: 'success' }).eq('id', activeEntryId.value)
+        const { error } = await $supabase.from('entries').update({ [column]: 'success' }).eq('id', activeEntryId.value)
         if (error) throw error
         toast.add({ severity: 'success', summary: 'Closed', detail: `${openType.value} session closed`, life: 3000 })
         router.push('/entry')
