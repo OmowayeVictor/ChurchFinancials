@@ -1,21 +1,46 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-xl shadow w-full max-w-md">
-      <h1 class="text-2xl font-bold mb-6">Sign In</h1>
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-2 text-center">
+        Welcome Back
+      </h1>
+      <p class="text-sm text-gray-500 text-center mb-8">
+        Sign in to continue to your dashboard
+      </p>
 
-      <form @submit.prevent="signIn" class="space-y-4">
-        <input v-model="email" type="email" placeholder="Email" class="w-full border rounded p-2" required />
+      <form @submit.prevent="signIn" class="space-y-5">
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Email address"
+          class="w-full border rounded-lg p-3 text-gray-800
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+          required
+        />
 
-        <input v-model="password" type="password" placeholder="Password" class="w-full border rounded p-2" required />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          class="w-full border rounded-lg p-3 text-gray-800
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+          required
+        />
 
-        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold
+                 hover:bg-blue-700 transition active:scale-[0.98]"
+        >
           Sign In
         </button>
       </form>
 
-      <p class="text-sm mt-4 text-center">
+      <p class="text-sm mt-6 text-center text-gray-600">
         No account?
-        <NuxtLink to="/signup" class="text-blue-600">Sign up</NuxtLink>
+        <NuxtLink to="/auth/signup" class="text-blue-600 font-semibold hover:underline">
+          Sign up
+        </NuxtLink>
       </p>
     </div>
   </div>

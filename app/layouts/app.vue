@@ -38,8 +38,16 @@
         <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600 text-2xl">
           ☰
         </button>
-        <div></div>
+         <button
+    @click="logout()"
+    class="text-red-600 font-semibold hover:underline"
+  >
+    Logout
+  </button>
+
       </div>
+
+      
 
       <!-- Header -->
    <header class="bg-white shadow-sm p-1 flex justify-center">
@@ -73,7 +81,15 @@
 import { ref } from 'vue'
 import Toast  from 'primevue/toast';
 
+const supabase = useSupabaseClient()
+const router = useRouter()
+
 const sidebarOpen = ref(false)
+
+const logout = async () => {
+  await supabase.auth.signOut()
+  router.push('/auth/login')
+}
 </script>
 
 <style scoped>
