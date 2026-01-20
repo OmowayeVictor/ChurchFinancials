@@ -1,7 +1,7 @@
 <template>
   <div class="p-6 bg-gray-100 min-h-screen">
     <div class="max-w-4xl mx-auto bg-white rounded-xl shadow p-6">
-      <!-- Header with button -->
+
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold">Entries</h2>
         <button @click="goToIncome()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -29,7 +29,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ entry.id }}</td>
 
-              <!-- Income Status -->
+
               <td class="px-6 py-4 whitespace-nowrap" ">
                 <span
                   :class="entry.income_status === 'success'
@@ -42,7 +42,7 @@
                 </span>
               </td>
 
-              <!-- Expenses Status -->
+
               <td class=" px-6 py-4 whitespace-nowrap">
                 <span :class="entry.expenses_status === 'success'
                   ? 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800'
@@ -128,21 +128,21 @@ const navigateEntry = (entry) => {
   }
 }
 
-// Confirm and delete entry
+
 const confirmDelete = async (entryId) => {
   if (!confirm(`Are you sure you want to delete entry #${entryId}? This will delete all incomes and expenses for this entry.`)) return
 
   loading.value = true
   try {
-    // Delete related incomes
+
     const { error: incomeError } = await supabase.from('incomes').delete().eq('entry_id', entryId)
     if (incomeError) throw incomeError
 
-    // Delete related expenses
+
     const { error: expenseError } = await supabase.from('expenses').delete().eq('entry_id', entryId)
     if (expenseError) throw expenseError
 
-    // Delete entry
+
     const { error: entryError } = await supabase.from('entries').delete().eq('id', entryId)
     if (entryError) throw entryError
 

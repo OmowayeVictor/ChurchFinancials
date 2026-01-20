@@ -10,9 +10,9 @@
         </button>
       </div>
 
-      <!-- Table / Loader -->
+
       <div class="overflow-x-auto relative">
-        <!-- Loader overlay -->
+
         <div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
           <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-b-4 border-gray-200"></div>
         </div>
@@ -39,13 +39,13 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap flex gap-3">
-                <!-- Edit (always available) -->
+
                 <button @click="openEditModal(category)" class="text-blue-600 hover:text-blue-800"
                   title="Edit category">
                   <i class="pi pi-pencil text-lg"></i>
                 </button>
 
-                <!-- Delete (inactive only) -->
+
                 <button v-if="category.category_status === 'inactive'" @click="openDeleteModal(category)"
                   class="text-red-600 hover:text-red-800" title="Delete category">
                   <i class="pi pi-trash text-lg"></i>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Modal Component -->
+
     <CreateModal v-if="modalType === 'create'" :show="showModal" @close="showModal = false"
       @submit="handleNewCategory" />
     <DeleteModal v-if="modalType === 'delete'" :show="showModal" :category="categoryToDelete" @close="showModal = false"
@@ -82,18 +82,18 @@ definePageMeta({
 const supabase = useSupabaseClient()
 
 const toast = useToast()
-//Data
+
 const categories = ref([])
 const categoryToDelete = ref(null)
 const categoryToEdit = ref(null)
 
-//Components
+
 const loading = ref(true)
 const showModal = ref(false)
 const modalType = ref(null)
 
 
-//Functions
+
 const openCreateModal = () => {
   modalType.value = 'create'
   showModal.value = true
@@ -121,7 +121,7 @@ const handleDeleteCategory = async () => {
   loading.value = true
 
   try {
-     const { error } = await supabase
+    const { error } = await supabase
       .from('categories')
       .delete()
       .eq('id', categoryToDelete.value.id)

@@ -2,7 +2,7 @@
   <div class="p-6 bg-gray-100 min-h-screen">
     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow p-6">
 
-      <!-- Header + Back -->
+
       <div class="flex justify-between mb-4 items-center">
         <h2 class="text-2xl font-semibold">Record {{ type }}</h2>
         <NuxtLink to="/entry" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
@@ -10,12 +10,12 @@
         </NuxtLink>
       </div>
 
-      <!-- Entry Notification -->
+
       <div v-if="activeEntryId" class="mb-4 p-4 rounded bg-blue-100 text-blue-800 font-semibold">
         Active Entry Session: <span class="font-bold">#{{ activeEntryId }}</span>
       </div>
 
-      <!-- Tabs: only pending -->
+
       <div v-if="activeEntryId" class="flex gap-2 mb-4">
         <button v-if="activeEntry.income_status === null" :class="type === 'income' ? activeTabClass : inactiveTabClass"
           @click="type = 'income'">
@@ -27,39 +27,39 @@
         </button>
       </div>
 
-      <!-- Entry Form -->
+
       <form v-if="activeEntryId && (activeEntry.income_status === null || activeEntry.expenses_status === null)"
         @submit.prevent="submitEntry" class="space-y-4">
-        <!-- Categories -->
+
         <div v-for="cat in incomeCategories" :key="cat.id" class="flex items-center gap-4">
           <label class="w-1/2 font-semibold text-gray-700">{{ cat.category_name }}</label>
           <input v-model="amounts[cat.id]" type="number" step="0.01" min="0" placeholder="0.00"
             class="w-1/2 border rounded p-2 bg-white text-gray-800 focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <!-- Inputed By -->
+
         <div>
           <label class="block font-semibold mb-1">Inputed By</label>
           <input v-model="inputedBy" type="text" required placeholder="e.g. Church Accountant"
             class="w-full border rounded p-2 bg-white text-gray-800 focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <!-- Date -->
+
         <div>
           <label class="block font-semibold mb-1">Date</label>
           <input v-model="date" type="date" required
             class="w-full border rounded p-2 bg-white text-gray-800 focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <!-- Actions -->
+
         <div class="flex justify-between pt-6">
-          <!-- Submit Entry -->
+
           <button type="submit" :disabled="loading"
             class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60">
             Save {{ type }}
           </button>
 
-          <!-- Close Session -->
+
           <button v-if="activeEntryId" type="button" @click="closeSession"
             class="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-60" :disabled="loading">
             Close Session
@@ -67,7 +67,7 @@
         </div>
       </form>
 
-      <!-- No pending entry -->
+
       <div v-else class="text-center text-gray-500 mt-8">
         All entries completed or session closed.
       </div>
@@ -200,7 +200,7 @@ async function closeSession() {
   try {
     const update = {}
 
-    // Close only the current type
+
     if (type.value === 'income' && activeEntry.value.income_status === null) {
       update.income_status = 'success'
     } else if (type.value === 'expenses' && activeEntry.value.expenses_status === null) {
@@ -222,11 +222,10 @@ async function closeSession() {
 
     toast.add({ severity: 'success', summary: 'Success', detail: `${type.value} session closed`, life: 3000 })
 
-    // Refresh entry
+
     const { data: updatedEntry } = await supabase.from('entries').select('*').eq('id', activeEntryId.value).single()
     activeEntry.value = updatedEntry
 
-    // If both types closed, hide form
     if (updatedEntry.income_status && updatedEntry.expenses_status) {
       activeEntryId.value = null
     }
