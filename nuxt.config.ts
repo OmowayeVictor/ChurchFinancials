@@ -23,15 +23,9 @@ primevue: {
     css: [
     'primeicons/primeicons.css'
   ],
-   runtimeConfig: {
-    public: {
-      supabaseUrl: process.env.supabase_URL,
-      supabaseApi: process.env.supabase_API
-    }
-  },
   supabase: {
-    url: process.env.supabase_URL,
-    key: process.env.supabase_API,
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_URL,
     redirect: true,
       redirectOptions: {
     login: '/auth/login',
