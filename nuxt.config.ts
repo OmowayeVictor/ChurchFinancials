@@ -29,7 +29,7 @@ primevue: {
     redirect: true,
       redirectOptions: {
     login: '/auth/login',
-    callback: '/entry',
+    callback: '/auth/login',
     include: undefined,
     exclude: ['/auth/**'], 
     saveRedirectToCookie: false,
