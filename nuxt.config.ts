@@ -5,34 +5,36 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@primevue/nuxt-module', '@nuxtjs/supabase'],
-  // plugins: ['~/plugins/supabase.client.ts'],
-primevue: {
+  primevue: {
+    options: {
+      ripple: true,
+      inputVariant: 'filled',
+      theme: {
+        preset: Aura,
         options: {
-            ripple: true,
-            inputVariant: 'filled',
-            theme: {
-                preset: Aura,
-                options: {
-                    prefix: 'p',
-                    darkModeSelector: 'system',
-                    cssLayer: false
-                }
-            }
-        }
+          prefix: 'p',
+          darkModeSelector: 'system',
+          cssLayer: false,
+        },
+      },
     },
-    css: [
-    'primeicons/primeicons.css'
-  ],
+  },
+  css: ['primeicons/primeicons.css'],
   supabase: {
     url: process.env.SUPABASE_URL,
     key: process.env.SUPABASE_KEY,
-    redirect: true,
-      redirectOptions: {
-    login: '/auth/login',
-    callback: '/auth/login',
-    include: undefined,
-    exclude: ['/auth/**'], 
-    saveRedirectToCookie: false,
-  }
-  }
+    redirect: false,
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/',
+      include: undefined,
+      exclude: ['/auth/**'],
+      saveRedirectToCookie: false,
+    },
+  },
+  runtimeConfig: {
+    public: {
+      appuRL: 'https://cacfolfinance.vercel.app',
+    },
+  },
 });

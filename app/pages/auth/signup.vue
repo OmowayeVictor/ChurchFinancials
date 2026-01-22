@@ -29,9 +29,17 @@
         <input v-model="password" type="password" placeholder="Password (min 6 characters)" class="w-full border rounded-lg p-3 text-gray-800
                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white" required />
 
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold
-                 hover:bg-blue-700 transition active:scale-[0.98]">
-          Create Account
+        <button type="submit" :disabled="loading" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold
+         hover:bg-blue-700 transition active:scale-[0.98]
+         disabled:opacity-60 disabled:cursor-not-allowed">
+          <span v-if="!loading">Create Account</span>
+          <span v-else class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+            </svg>
+            Creating Account...
+          </span>
         </button>
       </form>
 
@@ -53,12 +61,14 @@ const email = ref('')
 const password = ref('')
 const message = ref('')
 const messageType = ref('error')
+const loading = ref(false)
 
 const supabase = useSupabaseClient()
 const router = useRouter()
 
 const signUp = async () => {
   message.value = ''
+  loading.value = true
 
   const { data, error } = await supabase.auth.signUp({
     email: email.value,
@@ -69,14 +79,13 @@ const signUp = async () => {
       }
     }
   })
+  loading.value = false
   if (error) {
     messageType.value = 'error'
     message.value = 'An unexpected Error Occured, Please contact Victor'
     console.log(error)
     return
   }
-
-
   messageType.value = 'success'
   message.value = 'Account created successfully. You can now sign in.'
 

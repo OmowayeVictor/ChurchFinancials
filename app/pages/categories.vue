@@ -1,7 +1,7 @@
 <template>
   <div class="p-6 bg-gray-100 min-h-screen">
     <div class="max-w-4xl mx-auto bg-white shadow-md rounded-xl overflow-hidden">
-      <!-- Header with Button -->
+
       <div class="px-6 py-4 border-b flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-800">Categories</h2>
         <button @click="openCreateModal()"
@@ -247,7 +247,7 @@ const handleNewCategory = async (category) => {
   }
 }
 
-//Nuxt Functions
+
 onMounted(async () => {
   await fetchCategories()
 })

@@ -28,9 +28,17 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold
-                 hover:bg-blue-700 transition active:scale-[0.98]">
-          Sign In
+        <button type="submit" :disabled="loading" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold
+         hover:bg-blue-700 transition active:scale-[0.98]
+         disabled:opacity-60 disabled:cursor-not-allowed">
+          <span v-if="!loading">Sign In</span>
+          <span v-else class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+            </svg>
+            Signing in…
+          </span>
         </button>
       </form>
 
@@ -50,17 +58,20 @@ import { ref } from 'vue'
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
+const loading = ref(false);
+
 const supabase = useSupabaseClient()
 const router = useRouter()
 
 const signIn = async () => {
   errorMessage.value = ''
+  loading.value = true
 
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
-
+  loading.value = false
   if (error) {
     errorMessage.value = error.message
     return
