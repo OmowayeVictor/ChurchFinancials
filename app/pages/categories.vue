@@ -14,7 +14,7 @@
       <div class="overflow-x-auto relative">
 
         <div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-b-4 border-gray-200"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-b-4"></div>
         </div>
 
         <table class="min-w-full divide-y divide-gray-200 opacity-90">
