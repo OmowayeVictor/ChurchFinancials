@@ -180,7 +180,7 @@ async function submitEntry() {
   try {
     const tableName = type.value === 'income' ? 'incomes' : 'expenses'
 
-    const { error: insertError } = await supabasefrom(tableName).insert(rows)
+    const { error: insertError } = await supabase.from(tableName).insert(rows)
     if (insertError) throw insertError
 
     toast.add({ severity: 'success', summary: 'Success', detail: `${type.value} saved successfully`, life: 3000 })
