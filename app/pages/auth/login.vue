@@ -11,7 +11,7 @@
         Welcome Back
       </h1>
       <p class="text-sm text-gray-500 text-center mb-8">
-        Sign in to continue to your dashboard
+        Sign in to continue
       </p>
 
       <form @submit.prevent="signIn" class="space-y-5">

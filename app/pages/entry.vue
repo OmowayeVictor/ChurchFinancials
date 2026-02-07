@@ -124,7 +124,7 @@ const navigateEntry = (entry) => {
   } else if (entry.income_status !== 'success' || entry.expenses_status !== 'success') {
     router.push({ path: '/edit_entry', query: { entry: entry.id } })
   } else {
-    router.push({ path: '/dashboard', query: { entry: entry.id } })
+    router.push({ path: '/summary', query: { entry: entry.id } })
   }
 }
 

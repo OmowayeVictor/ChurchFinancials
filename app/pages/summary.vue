@@ -9,7 +9,7 @@
         >
           ← Back
         </button>
-        <h2 class="text-2xl font-semibold">Entry Dashboard</h2>
+        <h2 class="text-2xl font-semibold">Entry Summary</h2>
       </div>
 
       <div class="mb-6">
@@ -60,11 +60,11 @@
                   {{ cat.category_name }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {{ formatAmount(cat.total) }}
+                  {{ formatAmount(cat.total) }}   
                 </td>
               </tr>
-            </tbody>
-          </table>
+            </tbody>         
+          </table>         
           <div
             v-if="!loading && !incomeSummary.length"
             class="mt-2 text-gray-500 text-sm"
@@ -72,7 +72,7 @@
             No income recorded for this entry.
           </div>
         </div>
-        <p class="font-semibold text-lg text-right mt-2">
+        <p class="font-semibold text-lg text-right mt-2 text-black">
           Total Income: {{ formatAmount(totalIncome) }}
         </p>
       </div>
@@ -128,14 +128,14 @@
             No expenses recorded for this entry.
           </div>
         </div>
-        <p class="font-semibold text-lg text-right mt-2">
+        <p  class="font-semibold text-lg text-right mt-2 text-black">
           Total Expenses: {{ formatAmount(totalExpenses) }}
         </p>
       </div>
 
 
       <div class="mt-6 text-right">
-        <p class="font-bold text-xl">
+        <p class="font-bold text-xl text-black">
           Net Total (Income - Expenses): {{ formatAmount(netTotal) }}
         </p>
       </div>
@@ -148,7 +148,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 
-const { $supabase } = useNuxtApp();
+const supabase = useSupabaseClient()
 const toast = useToast();
 const router = useRouter();
 const route = useRoute();
@@ -176,7 +176,7 @@ if (!entryId) {
 const fetchSummary = async () => {
   loading.value = true;
   try {
-    const { data: incomeData, error: incomeError } = await $supabase
+    const { data: incomeData, error: incomeError } = await supabase
       .from('incomes')
       .select('category_id, amount, categories(category_name)')
       .eq('entry_id', entryId);
@@ -199,7 +199,7 @@ const fetchSummary = async () => {
       0
     );
 
-    const { data: expensesData, error: expensesError } = await $supabase
+    const { data: expensesData, error: expensesError } = await supabase
       .from('expenses')
       .select('category_id, amount, categories(category_name)')
       .eq('entry_id', entryId);
